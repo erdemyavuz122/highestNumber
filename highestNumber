@@ -1,0 +1,102 @@
+
+public class HighestNumber {
+
+	public static void main(String[] args) {
+		String input = GetInput();
+
+        String[] arrayOfRowsByNewlines = input.split("\n");
+        
+       
+
+        int[][] tableHolder = FlattenTheTriangleIntoTable(arrayOfRowsByNewlines);
+
+        int[][] result = WalkThroughTheNode(arrayOfRowsByNewlines, tableHolder);
+
+        System.out.println("The Maximum Total Sum Of Non-Prime Numbers From Top To Bottom Is:" + result[0][0]);
+		
+
+	}
+	 private static String GetInput()
+	    {
+
+	             final String input =    "215\n"+
+	                                   "193 124\n"+
+	                                  "117 237 442\n"+
+	                                "218 935 347 235\n"+
+	                              "320 804 522 417 345\n"+
+	                            "229 601 723 835 133 124\n"+
+	                          "248 202 277 433 207 263 257\n"+
+	                        "359 464 504 528 516 716 871 182\n"+
+	                      "461 441 426 656 863 560 380 171 923\n"+
+	                     "381 348 573 533 447 632 387 176 975 449\n"+
+	                   "223 711 445 645 245 543 931 532 937 541 444\n"+
+	                 "330 131 333 928 377 733 017 778 839 168 197 197\n"+
+	                "131 171 522 137 217 224 291 413 528 520 227 229 928\n"+
+	              "223 626 034 683 839 053 627 310 713 999 629 817 410 121\n"+
+	            "924 622 911 233 325 139 721 218 253 223 107 233 230 124 233";
+	       
+                     return input;
+	    }
+         
+
+	    private static int[][] WalkThroughTheNode(String[] arrayOfRowsByNewlines, int[][] tableHolder)
+	    {
+	        // walking through the non-prime node
+	        for (int i = arrayOfRowsByNewlines.length - 2; i >= 0; i--)
+	        {
+	            for (int j = 0; j < arrayOfRowsByNewlines.length; j++)
+	            {
+	                //only sum through the non-prime node
+	                if ((!IsPrime(tableHolder[i][j])))
+	                {
+	                    tableHolder[i][j] = Math.max(tableHolder[i][j] + tableHolder[i + 1][j],
+	                        tableHolder[i][j] + tableHolder[i + 1][j + 1]);
+	                }
+	            }
+	        }
+	        return tableHolder;
+	    }
+
+	    private static int[][] FlattenTheTriangleIntoTable(String[]arrayOfRowsByNewlines)
+	    {
+                System.out.println(arrayOfRowsByNewlines.length);
+	        int[][] tableHolder = new int[arrayOfRowsByNewlines.length][arrayOfRowsByNewlines.length + 1];
+
+	        for (int row = 0; row < arrayOfRowsByNewlines.length; row++)
+	        {
+	             String[] eachNumberInRow = arrayOfRowsByNewlines[row].split(" ");
+                     
+
+	            for (int column = 0; column < eachNumberInRow.length; column++)
+	            {
+	                
+	                tableHolder[row] [column] = Integer.parseInt(eachNumberInRow[column]);
+	            }
+	        }
+	        return tableHolder;
+	    }
+
+	    public static boolean IsPrime(int number)
+	    {
+	       
+	        if ((number & 1) == 0)
+	        {
+	            if (number == 2)
+	            {
+	                return true;
+	            }
+	            return false;
+	        }
+
+	        for (int i = 3; (i * i) <= number; i += 2)
+	        {
+	            if ((number % i) == 0)
+	            {
+	                return false;
+	            }
+	        }
+	        return number != 1;
+	    }
+
+	
+}
